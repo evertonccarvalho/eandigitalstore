@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
-const Logo = () => {
+const Logo = ({ className }: { className?: string }) => {
 	return (
 		<>
 			<Image
@@ -9,7 +9,7 @@ const Logo = () => {
 				alt="ean logo"
 				width={100}
 				height={100}
-				className={cn('w-10 h-10')}
+				className={cn('w-full h-full', className)}
 			/>
 		</>
 	);

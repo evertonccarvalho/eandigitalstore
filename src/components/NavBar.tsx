@@ -18,7 +18,7 @@ const NavBar = () => {
 							{/* TODO: Mobile Nav  */}
 							<div className="flex ml-4 lg:ml-0">
 								<Link href={'/'}>
-									<Logo />
+									<Logo className="w-10 h-10" />
 									{/* <Icons.logo className="h-10 w-10" /> */}
 								</Link>
 							</div>
