@@ -1,9 +1,9 @@
 'use client';
 
 import { PRODUCT_CATEGORIES } from '@/config';
+import { useOnClickOutside } from '@/hooks/use-on-click-outside';
 import { useEffect, useRef, useState } from 'react';
 import NavItem from './NavItem';
-import { useOnClickOutside } from '@/hooks/use-on-click-outside';
 
 const NavItems = () => {
 	const [activeIndex, setActiveIndex] = useState<null | number>(null);
@@ -14,7 +14,9 @@ const NavItems = () => {
 				setActiveIndex(null);
 			}
 		};
+
 		document.addEventListener('keydown', handler);
+
 		return () => {
 			document.removeEventListener('keydown', handler);
 		};
@@ -37,17 +39,19 @@ const NavItems = () => {
 					}
 				};
 
+				const close = () => setActiveIndex(null);
+
 				const isOpen = i === activeIndex;
+
 				return (
-					<>
-						<NavItem
-							category={category}
-							handleOpen={handleOpen}
-							isOpen={isOpen}
-							key={category.value}
-							isAnyOpen={isAnyOpen}
-						/>
-					</>
+					<NavItem
+						category={category}
+						close={close}
+						handleOpen={handleOpen}
+						isOpen={isOpen}
+						key={category.value}
+						isAnyOpen={isAnyOpen}
+					/>
 				);
 			})}
 		</div>
