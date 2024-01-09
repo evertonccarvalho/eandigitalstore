@@ -66,7 +66,7 @@ const Page = () => {
 								className: 'gap-1.5',
 							})}
 						>
-							Already heave an account? Sign-in
+							Já tem uma conta? Entrar
 							<ArrowRight className="w-4 h-4" />
 						</Link>
 					</div>
@@ -82,6 +82,11 @@ const Page = () => {
 										})}
 										placeholder="you@example.com"
 									/>
+									{errors?.email && (
+										<p className="text-sm text-red-500">
+											{errors.email.message}
+										</p>
+									)}
 								</div>{' '}
 								<div className="grid gap-1 py-2">
 									<Label htmlFor="password">Password</Label>
@@ -93,8 +98,13 @@ const Page = () => {
 										})}
 										placeholder="Password"
 									/>
+									{errors?.password && (
+										<p className="text-sm text-red-500">
+											{errors.password.message}
+										</p>
+									)}
 								</div>
-								<Button>Sign Up </Button>
+								<Button>Criar</Button>
 							</div>
 						</form>
 					</div>
