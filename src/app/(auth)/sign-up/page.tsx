@@ -12,9 +12,14 @@ import { trpc } from '@/trpc/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { ZodError } from 'zod';
 
 const Page = () => {
+	const router = useRouter();
+
 	const {
 		register,
 		handleSubmit,
@@ -23,7 +28,25 @@ const Page = () => {
 		resolver: zodResolver(AuthCredentialsValidator),
 	});
 
-	const { mutate, isLoading } = trpc.auth.createPayloadUser.useMutation({});
+	const { mutate, isLoading } = trpc.auth.createPayloadUser.useMutation({
+		onError: (err) => {
+			if (err.data?.code === 'CONFLICT') {
+				toast.error('Esse email já está em uso. Em vez disso, faça login?');
+				return;
+			}
+
+			if (err instanceof ZodError) {
+				toast.error(err.issues[0].message);
+				return;
+			}
+
+			toast.error('Algo deu errado. Por favor, tente novamene!');
+		},
+		onSuccess: ({ sentToEmail }) => {
+			toast.success(`E-mail de verificação enviado para ${sentToEmail}`);
+			router.push('/verify-email?to=' + sentToEmail);
+		},
+	});
 
 	const onSubmit = ({ email, password }: TAuthCredentialsValidator) => {
 		mutate({ email, password });
