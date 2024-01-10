@@ -4,11 +4,13 @@ import { Icons } from './Icons';
 import NavItems from './NavItems';
 import { buttonVariants } from './ui/button';
 import Cart from './Cart';
-import Logo from './logo';
 import { getServerSideUser } from '@/lib/payload-utils';
 import { cookies } from 'next/headers';
 import UserAccountNav from './UserAccountNav';
-const NavBar = async () => {
+import MobileNav from './MobileNav';
+import Logo from './logo';
+
+const Navbar = async () => {
 	const nextCookies = cookies();
 	const { user } = await getServerSideUser(nextCookies);
 
@@ -18,24 +20,28 @@ const NavBar = async () => {
 				<MaxWidthWrapper>
 					<div className="border-b border-gray-200">
 						<div className="flex h-16 items-center">
-							{/* TODO: Mobile Nav  */}
-							<div className="flex ml-4 lg:ml-0">
-								<Link href={'/'}>
-									<Logo className="w-10 h-10" />
-									{/* <Icons.logo className="h-10 w-10" /> */}
+							<MobileNav />
+
+							<div className="ml-4 flex lg:ml-0">
+								<Link href="/">
+									<Logo className="h-10 w-10" />
 								</Link>
 							</div>
+
 							<div className="hidden z-50 lg:ml-8 lg:block lg:self-stretch">
 								<NavItems />
 							</div>
+
 							<div className="ml-auto flex items-center">
-								<div className="hidden lg:flex lg:flex-1 lg:items-center lg justify-end lg:space-x-6">
+								<div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
 									{user ? null : (
 										<Link
-											href={'/sign-in'}
-											className={buttonVariants({ variant: 'ghost' })}
+											href="/sign-in"
+											className={buttonVariants({
+												variant: 'ghost',
+											})}
 										>
-											Login
+											Sign in
 										</Link>
 									)}
 
@@ -47,12 +53,15 @@ const NavBar = async () => {
 										<UserAccountNav user={user} />
 									) : (
 										<Link
-											href={'/sign-up'}
-											className={buttonVariants({ variant: 'ghost' })}
+											href="/sign-up"
+											className={buttonVariants({
+												variant: 'ghost',
+											})}
 										>
-											Registro
+											Create account
 										</Link>
 									)}
+
 									{user ? (
 										<span className="h-6 w-px bg-gray-200" aria-hidden="true" />
 									) : null}
@@ -65,6 +74,7 @@ const NavBar = async () => {
 											/>
 										</div>
 									)}
+
 									<div className="ml-4 flow-root lg:ml-6">
 										<Cart />
 									</div>
@@ -78,4 +88,4 @@ const NavBar = async () => {
 	);
 };
 
-export default NavBar;
+export default Navbar;
